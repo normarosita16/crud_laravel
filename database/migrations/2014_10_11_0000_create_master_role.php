@@ -17,11 +17,11 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('name');
             $table->string('code')->unique();
-            $table->timestamp('created_date')->useCurrent();
+            $table->timestamp('created_at')->useCurrent();
             $table->uuid('created_by')->nullable();
-            $table->timestamp('updated_date')->useCurrent()->useCurrentOnUpdate();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->uuid('updated_by')->nullable();
-            $table->timestamp('deleted_date')->nullable();
+            $table->timestamp('deleted_at')->nullable();
             $table->uuid('deleted_by')->nullable();
         });
     }

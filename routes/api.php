@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\RoleController; // Import RoleController
 
 /*
 |--------------------------------------------------------------------------
@@ -20,11 +21,15 @@ use App\Http\Controllers\Api\AuthController;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
+Route::post('/roles', [RoleController::class, 'store']); // Create a new role
+Route::get('/roles', [RoleController::class, 'index']);  // Get list of roles
+
 // Authenticated only API
-// We use auth api here as a middleware so only authenticated user who can access the endpoint
-// We use group so we can apply middleware auth api to all the routes within the group
 Route::middleware('auth:api')->group(function() {
     Route::get('/me', [UserController::class, 'me']);
+
+    // Role Management API
+    
 });
 
 Route::post('/logout', [AuthController::class, 'logout']);
