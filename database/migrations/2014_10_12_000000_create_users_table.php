@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('password');
             $table->integer('is_active')->default(1);
             $table->uuid('role_id');
-            $table->string('token')->nullable();
+            $table->text('token')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->uuid('created_by')->nullable();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();

@@ -102,4 +102,50 @@ class UserController extends Controller
         }
         return response()->json(['message' => 'Success', 'data' => $user]);
     }
+
+    public function login(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required_without:username|email',
+            'username' => 'required_without:email|string',
+            'password' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()], 400);
+        }
+
+        $user = User::where('email', $request->email)
+            ->orWhere('username', $request->username)
+            ->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'Email atau username tidak terdaftar di sistem'], 400);
+        }
+
+        if ($user->is_active == 0) {
+            return response()->json(['message' => 'Anda belum melakukan verifikasi email untuk pembuatan kata sandi, mohon periksa email Anda'], 400);
+        }
+
+        if (!Hash::check($request->password, $user->password)) {
+            return response()->json(['message' => 'Password salah'], 401);
+        }
+
+        $token = JWTAuth::fromUser($user);
+        $user->update(['token' => $token]);
+
+        $role = Role::select('id', 'name')->where('id', $user->role_id)->first();
+
+        $data = [
+            'email' => $user->email,
+            'user_id' => $user->id,
+            'username' => $user->username,
+            'fullname' => $user->fullname,
+            'role_id' => $role->id,
+            'role_name' => $role->name,
+            'token' => $token,
+        ];
+
+        return response()->json(['message' => 'Login berhasil', 'data' => $data]);
+    }
 }
