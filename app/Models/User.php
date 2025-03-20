@@ -16,7 +16,7 @@ class User extends Authenticatable implements JWTSubject
     protected $table = 'mst_users';
     protected $primaryKey = 'id';
     public $incrementing = false;
-    protected $keyType = 'string';
+    protected $keyType = 'uuid';
 
     protected $fillable = [
         'id',
@@ -36,21 +36,23 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     protected $casts = [
-        'is_active' => 'integer',
-        'role_id' => 'integer',
+        'is_active' => 'boolean',
+        'role_id' => 'string',
     ];
 
-    public static function boot()
+    protected static function boot()
     {
         parent::boot();
         self::creating(function ($model) {
-            $model->id = Str::uuid();
+            if (empty($model->id)) {
+                $model->id = (string) Str::uuid();
+            }
         });
     }
 
     public function role()
     {
-        return $this->belongsTo(Role::class, 'role_id');
+        return $this->belongsTo(Role::class, 'role_id', 'id');
     }
 
     public function getJWTIdentifier()

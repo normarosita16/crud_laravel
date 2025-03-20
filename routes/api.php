@@ -24,12 +24,16 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/roles', [RoleController::class, 'store']); // Create a new role
 Route::get('/roles', [RoleController::class, 'index']);  // Get list of roles
 
+   // User Management API
+   Route::post('/users', [UserController::class, 'createUser']); // Create user
+   Route::get('/users', [UserController::class, 'listUser']); // List users
+   Route::get('/users/{id}', [UserController::class, 'viewUser']); // View user by ID
+   Route::put('/users/{id}', [UserController::class, 'updateUser']); // Update user
+   Route::delete('/users/{id}', [UserController::class, 'delete']); // Delete user
+
 // Authenticated only API
 Route::middleware('auth:api')->group(function() {
     Route::get('/me', [UserController::class, 'me']);
-
-    // Role Management API
-    
 });
 
 Route::post('/logout', [AuthController::class, 'logout']);
