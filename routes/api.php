@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\RoleController; // Import RoleController
+use App\Http\Controllers\Api\EmployeeController; // Import EmployeeController
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +28,9 @@ Route::get('/roles', [RoleController::class, 'index']);  // Get list of roles
    Route::delete('/users/{id}', [UserController::class, 'delete']); // Delete user
 
    Route::post('/login', [UserController::class, 'login']); // User login
+
+   // Employee Data API
+   Route::get('/employees', [EmployeeController::class, 'fetchData']); // Fetch employee data
 
 // Authenticated only API
 Route::middleware('auth:api')->group(function() {
