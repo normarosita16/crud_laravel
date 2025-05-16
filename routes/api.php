@@ -4,7 +4,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\RoleController; // Import RoleController
-use App\Http\Controllers\Api\EmployeeController; // Import EmployeeController
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +34,4 @@ Route::middleware('auth:api')->group(function() {
     Route::put('/users/{id}', [UserController::class, 'updateUser']); // Update user
     Route::delete('/users/{id}', [UserController::class, 'delete']); // Delete user
 
-     // Employee Data API
-    Route::get('/employees', [EmployeeController::class, 'fetchData']); // Fetch employee data
 });
